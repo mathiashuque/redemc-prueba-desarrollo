@@ -4,6 +4,7 @@
  */
 :root {
   --app-font: "Inter", system-ui, -apple-system, "Segoe UI", roboto, sans-serif;
+
   /* Paleta de la marca redEMC (logo). Los tonos base son decorativos; texto y botones usan las variantes oscuras. */
   --brand-pink: #e8488a;
   --brand-yellow: #f7b52c;
