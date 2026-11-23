@@ -33,14 +33,14 @@ declare(strict_types=1);
                     <h2 class="h5 mb-3">Listado de datos</h2>
                     <div id="contact-list-status" class="contact-list-status" role="status" aria-live="polite"></div>
                     <div id="contact-list" class="contact-list"></div>
-                    <nav class="contact-pagination d-none" id="contact-pagination"
-                         aria-label="Paginado del listado">
+                    <div class="contact-pagination d-none" id="contact-pagination"
+                         role="navigation" aria-label="Paginado del listado">
                         <button type="button" class="btn btn-outline-primary btn-sm"
                                 id="contact-prev">Anterior</button>
                         <span class="text-body-secondary small" id="contact-page-info"></span>
                         <button type="button" class="btn btn-outline-primary btn-sm"
                                 id="contact-next">Siguiente</button>
-                    </nav>
+                    </div>
                 </div>
             </div>
         </div>
