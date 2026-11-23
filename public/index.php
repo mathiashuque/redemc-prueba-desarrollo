@@ -25,7 +25,39 @@ declare(strict_types=1);
             <div class="col-12 col-lg-5">
                 <div class="app-card" id="contact-form-section">
                     <h2 class="h5 mb-3">Ingreso de datos</h2>
-                    <!-- El formulario se implementa como feature (ver task.md §3). -->
+                    <form id="contact-form" novalidate>
+                        <div class="mb-3">
+                            <label for="contact-nombre" class="form-label">
+                                Nombre <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="contact-nombre" name="nombre"
+                                   maxlength="100" autocomplete="name" required
+                                   aria-describedby="contact-nombre-error">
+                            <div class="invalid-feedback" id="contact-nombre-error"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contact-email" class="form-label">
+                                Email <span class="text-danger">*</span>
+                            </label>
+                            <input type="email" class="form-control" id="contact-email" name="email"
+                                   maxlength="255" autocomplete="email" required
+                                   aria-describedby="contact-email-error">
+                            <div class="invalid-feedback" id="contact-email-error"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contact-telefono" class="form-label">
+                                Teléfono <span class="text-body-secondary small">(opcional)</span>
+                            </label>
+                            <input type="tel" class="form-control" id="contact-telefono" name="telefono"
+                                   inputmode="tel" autocomplete="tel"
+                                   placeholder="097680102" aria-describedby="contact-telefono-error">
+                            <div class="invalid-feedback" id="contact-telefono-error"></div>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <button type="submit" class="btn btn-primary" id="contact-submit">Guardar</button>
+                            <div class="small" id="contact-form-status" role="status" aria-live="polite"></div>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="col-12 col-lg-7">
