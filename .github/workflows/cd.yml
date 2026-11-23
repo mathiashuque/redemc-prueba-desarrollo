@@ -67,7 +67,7 @@ jobs:
         with:
           node-version: "24"
       - name: Instalar Railway CLI
-        run: npm install --global @railway/cli
+        run: npm install --global @railway/cli@5.71.0
       - name: Desplegar
         run: railway up --ci --service "$RAILWAY_SERVICE"
       - name: Smoke test

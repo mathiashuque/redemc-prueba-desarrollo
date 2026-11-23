@@ -17,3 +17,13 @@ Decisiones sobre el uso de IA durante la prueba: herramientas, sugerencias acept
 - **Corregido en revisión**: el junior de #6 puso `maxlength="9"` al teléfono. El navegador truncaba un número de 10 dígitos a 9 y lo aceptaba como válido en silencio, ocultando el error de longitud. Se quitó el atributo.
 - **Corregido antes del primer deploy**: al configurar Railway, `APP_URL` quedó cargada sin esquema y el smoke test del CD habría fallado, porque Railway responde 301 a http. Se detectó al preparar la prueba del CD y el workflow ahora normaliza la URL.
 - **Aprendizaje**: con agentes en paralelo, el trabajo del coordinador es definir contratos y límites de archivos antes de empezar. La revisión en navegador encontró problemas que los tests no cubrían, como el truncado del `maxlength`.
+
+## 2026-11-23 · Análisis de seguridad
+
+- **Herramientas**: Claude Code (Opus) para revisar el código y la configuración. También corrió `composer audit`, `npm audit` y Trivy sobre la imagen de producción. El resultado está en [`docs/SEGURIDAD.md`](../SEGURIDAD.md).
+- **Aceptado**:
+  - La protección CSRF se hace por `Sec-Fetch-Site`/`Origin` y no con tokens, porque la app no tiene sesiones.
+  - No se suben Bootstrap 5.3.9 ni jQuery 3.8.0 por tener menos de dos semanas de publicadas. Se mantienen las versiones actuales con SRI.
+  - Trivy corre desde su imagen oficial con versión fija, en lugar de una action de terceros.
+- **Corregido en la verificación**: el primer hash SRI de jQuery estaba mal. Se calculó sobre la salida de `$(curl …)`, que quita el salto de línea final del archivo. El navegador bloqueó jQuery y el listado no cargó. Los tests no lo detectaron, pero sí la revisión en el navegador. El hash se recalculó directo del pipe y se contrastó con code.jquery.com.
+- **Aprendizaje**: un SRI incorrecto rompe la página sin dar señales del lado del servidor. Hay que verificarlo siempre en el navegador, o comparándolo con el hash que publica el proveedor.
