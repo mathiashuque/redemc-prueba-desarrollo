@@ -7,13 +7,12 @@ namespace Tests\Integration;
 use App\Config;
 use App\Database;
 use PDO;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Prueba GET /api/listar.php contra la app levantada y la base real.
  * Cada test vacía la tabla `contactos` (es la base de desarrollo/test) y siembra sus datos.
  */
-final class ListarContactosTest extends TestCase
+final class ListarContactosTest extends ApiTestCase
 {
     private PDO $pdo;
 
@@ -182,26 +181,5 @@ final class ListarContactosTest extends TestCase
         ]);
 
         return (int) $this->pdo->lastInsertId();
-    }
-
-    /**
-     * @return array{int, string}
-     */
-    private function request(string $method, string $path): array
-    {
-        $baseUrl = rtrim(getenv('APP_URL') ?: 'http://localhost:8080', '/');
-        $context = stream_context_create([
-            'http' => ['method' => $method, 'ignore_errors' => true, 'timeout' => 10],
-        ]);
-
-        $body = @file_get_contents($baseUrl . $path, false, $context);
-        if ($body === false) {
-            self::fail('No se pudo conectar con ' . $baseUrl . '. ¿Está levantada la aplicación?');
-        }
-
-        /** @var list<string> $http_response_header */
-        preg_match('{HTTP/\S+ (\d{3})}', $http_response_header[0] ?? '', $matches);
-
-        return [(int) ($matches[1] ?? 0), $body];
     }
 }
