@@ -15,5 +15,5 @@ Decisiones sobre el uso de IA durante la prueba: herramientas, sugerencias acept
 - **Aceptado**: el junior de #4 agregó topes de 100 caracteres al nombre y de 255 al email. La spec no los pedía, pero evitan un error 500 de la base por datos demasiado largos. Se aceptó.
 - **Corregido en revisión**: el junior de #5 maquetó el paginado con `<nav>`. Se cambió a `<div role="navigation">` por la regla de maquetar solo con `<div>`.
 - **Corregido en revisión**: el junior de #6 puso `maxlength="9"` al teléfono. El navegador truncaba un número de 10 dígitos a 9 y lo aceptaba como válido en silencio, ocultando el error de longitud. Se quitó el atributo.
-- **Corregido por el usuario (etapa anterior)**: el CD fallaba si `APP_URL` no tenía esquema, porque Railway responde 301 a http. Se normaliza la URL en el workflow.
+- **Corregido antes del primer deploy**: al configurar Railway, `APP_URL` quedó cargada sin esquema y el smoke test del CD habría fallado, porque Railway responde 301 a http. Se detectó al preparar la prueba del CD y el workflow ahora normaliza la URL.
 - **Aprendizaje**: con agentes en paralelo, el trabajo del coordinador es definir contratos y límites de archivos antes de empezar. La revisión en navegador encontró problemas que los tests no cubrían, como el truncado del `maxlength`.

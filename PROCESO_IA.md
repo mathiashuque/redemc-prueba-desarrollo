@@ -6,7 +6,7 @@ Este archivo resume cómo usé herramientas de IA en la prueba. El detalle compl
 
 - **Claude Code (Opus)**: coordinador y revisor. Planificó el harness (AGENTS.md, skills, agente `revisor`), la estructura base con Docker, el CI/CD y el reparto de features. Revisó el trabajo de los agentes antes de que yo lo viera.
 - **Agentes Claude Haiku**: implementadores de las features #4 a #8. Cada uno trabajó en su propio git worktree y rama `feature/*`, con un PR a `develop`.
-- **Yo (desarrollador)**: definí los requisitos en `task.md`, revisé cada PR en el navegador y mergeé a `develop`. Decidí qué sugerencias se aceptaban.
+- **Yo (desarrollador)**: pasé la consigna de RedEMC a una especificación técnica (`task.md`, redactada con ayuda de Claude), revisé cada PR y la app levantada en local, mergeé a `develop` y decidí qué sugerencias se aceptaban.
 
 ## 2. Prompts clave
 
