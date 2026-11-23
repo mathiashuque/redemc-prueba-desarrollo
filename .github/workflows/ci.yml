@@ -16,6 +16,7 @@ concurrency:
 env:
   PHP_VERSION: "8.4"
   NODE_VERSION: "24"
+  TRIVY_IMAGE: aquasec/trivy:0.76.1
 
 jobs:
   php:
@@ -23,14 +24,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: ${{ env.PHP_VERSION }}
           extensions: pdo_mysql
           coverage: none
           tools: composer:v2
       - run: composer validate --strict
-      - uses: ramsey/composer-install@v4
+      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
       - run: composer lint
       - run: composer cs
       - run: composer stan
@@ -53,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mysql:
-        image: mysql:8.4
+        image: mysql:8.4.13
         env:
           MYSQL_DATABASE: redemc
           MYSQL_USER: redemc
@@ -75,13 +76,13 @@ jobs:
       APP_URL: http://127.0.0.1:8000
     steps:
       - uses: actions/checkout@v7
-      - uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: ${{ env.PHP_VERSION }}
           extensions: pdo_mysql
           coverage: none
           tools: composer:v2
-      - uses: ramsey/composer-install@v4
+      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
       - name: Aplicar esquema
         run: php bin/migrate.php
       - name: Levantar la app
@@ -116,3 +117,32 @@ jobs:
           done
           docker logs app
           exit 1
+
+  security:
+    name: Seguridad (dependencias e imagen)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          coverage: none
+          tools: composer:v2
+      - name: composer audit
+        run: composer audit --locked
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: npm audit
+        run: npm audit --audit-level=high
+      - name: Construir imagen de producción
+        run: docker build -t redemc:scan .
+      # Trivy corre desde su imagen oficial con versión fija, sin actions de terceros.
+      - name: Trivy - vulnerabilidades de la imagen
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock "$TRIVY_IMAGE" \
+            image --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 redemc:scan
+      - name: Trivy - configuración (Dockerfile, compose)
+        run: |
+          docker run --rm -v "$PWD:/src:ro" "$TRIVY_IMAGE" \
+            config --severity HIGH,CRITICAL --exit-code 1 /src
