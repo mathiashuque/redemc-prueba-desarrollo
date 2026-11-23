@@ -54,7 +54,10 @@ declare(strict_types=1);
                             <div class="invalid-feedback" id="contact-telefono-error"></div>
                         </div>
                         <div class="d-flex align-items-center gap-3">
-                            <button type="submit" class="btn btn-primary" id="contact-submit">Guardar</button>
+                            <button type="submit" class="btn btn-primary" id="contact-submit">
+                                <span class="spinner-border spinner-border-sm me-2 d-none"
+                                      id="contact-submit-spinner" aria-hidden="true"></span>Guardar
+                            </button>
                             <div class="small" id="contact-form-status" role="status" aria-live="polite"></div>
                         </div>
                     </form>
