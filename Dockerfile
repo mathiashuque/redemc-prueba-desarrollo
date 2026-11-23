@@ -10,7 +10,7 @@ RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoload
     --ignore-platform-req=ext-pdo_mysql
 
 # Base común: PHP 8.4 + Apache + pdo_mysql, docroot en public/.
-FROM php:8.4.28-apache AS base
+FROM php:8.5.0RC5-apache AS base
 # apt-get upgrade toma los parches de seguridad de Debian publicados después de la imagen base.
 RUN apt-get update \
     && apt-get upgrade -y --no-install-recommends \
