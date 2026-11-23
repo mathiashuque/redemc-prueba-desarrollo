@@ -80,6 +80,7 @@
   let $info;
   let $prev;
   let $next;
+  let $count;
 
   // "2026-11-23 14:05:00" -> "23/11/2026 14:05". El valor llega del servidor y se pinta con .text().
   function formatFecha(sqlDate) {
@@ -87,19 +88,68 @@
     return m ? m[3] + '/' + m[2] + '/' + m[1] + ' ' + m[4] + ':' + m[5] : sqlDate;
   }
 
+  const COLORES_AVATAR = 6;
+  const SKELETONS = 3;
+
+  // "ana maría pérez" -> "AM". Se pinta con .text().
+  function iniciales(nombre) {
+    return nombre
+      .split(' ')
+      .slice(0, 2)
+      .map(function (parte) {
+        return parte.charAt(0);
+      })
+      .join('')
+      .toUpperCase();
+  }
+
+  // El mismo nombre siempre recibe el mismo color.
+  function colorAvatar(nombre) {
+    let suma = 0;
+    for (let i = 0; i < nombre.length; i++) {
+      suma += nombre.charCodeAt(i);
+    }
+    return 'contact-avatar-c' + (suma % COLORES_AVATAR);
+  }
+
   function renderContacto(contacto) {
-    const telefono = contacto.telefono !== null ? contacto.telefono : '—';
+    const sinTelefono = contacto.telefono === null;
 
     return $('<div>', { class: 'contact-item' }).append(
-      $('<div>', { class: 'contact-item-nombre fw-semibold' }).text(contacto.nombre),
+      $('<div>', { class: 'contact-avatar ' + colorAvatar(contacto.nombre), 'aria-hidden': 'true' }).text(
+        iniciales(contacto.nombre)
+      ),
+      $('<div>', { class: 'contact-item-nombre' }).text(contacto.nombre),
       $('<div>', { class: 'contact-item-email' }).text(contacto.email),
-      $('<div>', { class: 'contact-item-telefono small' }).text(telefono),
-      $('<div>', { class: 'contact-item-fecha small text-body-secondary' }).text(formatFecha(contacto.created_at))
+      $('<div>', { class: 'contact-item-telefono' + (sinTelefono ? ' is-empty' : '') }).text(
+        sinTelefono ? 'Sin teléfono' : contacto.telefono
+      ),
+      $('<div>', { class: 'contact-item-fecha' }).text(formatFecha(contacto.created_at))
     );
   }
 
+  function renderSkeletons() {
+    for (let i = 0; i < SKELETONS; i++) {
+      $list.append(
+        $('<div>', { class: 'contact-item contact-skeleton', 'aria-hidden': 'true' }).append(
+          $('<div>', { class: 'contact-avatar' }),
+          $('<div>', { class: 'contact-skeleton-line contact-item-nombre' }),
+          $('<div>', { class: 'contact-skeleton-line contact-item-email' })
+        )
+      );
+    }
+  }
+
   function setStatus(texto) {
-    $status.text(texto || '').toggleClass('is-loading', texto === MSG_CARGANDO);
+    $status
+      .text(texto || '')
+      .toggleClass('is-loading', texto === MSG_CARGANDO)
+      .toggleClass('is-empty', texto === MSG_VACIO)
+      .toggleClass('is-error', texto === MSG_ERROR);
+  }
+
+  function updateCount(total) {
+    $count.text(total === 1 ? '1 contacto' : total + ' contactos').toggleClass('d-none', total === 0);
   }
 
   function updatePagination() {
@@ -115,6 +165,7 @@
 
     setStatus(MSG_CARGANDO);
     $list.empty();
+    renderSkeletons();
 
     $.getJSON(API_LISTAR, { page: page })
       .done(function (res) {
@@ -123,6 +174,8 @@
         }
         state.page = res.page;
         state.totalPages = res.totalPages;
+        $list.empty();
+        updateCount(res.total);
 
         if (res.data.length === 0) {
           setStatus(MSG_VACIO);
@@ -142,6 +195,7 @@
         if (id !== requestId) {
           return;
         }
+        $list.empty();
         setStatus(MSG_ERROR);
         $pagination.addClass('d-none');
       });
@@ -266,6 +320,7 @@
     $info = $('#contact-page-info');
     $prev = $('#contact-prev');
     $next = $('#contact-next');
+    $count = $('#contact-count');
 
     $prev.on('click', function () {
       load(state.page - 1);
