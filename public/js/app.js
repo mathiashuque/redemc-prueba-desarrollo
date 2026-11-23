@@ -67,8 +67,10 @@
 
   let $form;
   let $submit;
+  let $submitSpinner;
   let $formStatus;
   let enviando = false;
+  let marcarNuevo = false;
 
   const state = { page: 1, totalPages: 1 };
   let requestId = 0;
@@ -97,7 +99,7 @@
   }
 
   function setStatus(texto) {
-    $status.text(texto || '');
+    $status.text(texto || '').toggleClass('is-loading', texto === MSG_CARGANDO);
   }
 
   function updatePagination() {
@@ -129,7 +131,11 @@
           res.data.forEach(function (contacto) {
             $list.append(renderContacto(contacto));
           });
+          if (marcarNuevo && res.page === 1) {
+            $list.children().first().addClass('is-new');
+          }
         }
+        marcarNuevo = false;
         updatePagination();
       })
       .fail(function () {
@@ -149,14 +155,15 @@
     const $campo = $input(campo);
     $campo.toggleClass('is-invalid', mensaje !== '');
     $campo.attr('aria-invalid', mensaje !== '' ? 'true' : 'false');
+    $campo.toggleClass('is-valid', mensaje === '' && ($campo.val() || '').trim() !== '');
     $('#contact-' + campo + '-error').text(mensaje);
   }
 
   // tipo: 'error', 'ok' o undefined (neutro, por ejemplo mientras se envía).
   function setFormStatus(texto, tipo) {
     $formStatus
-      .removeClass('text-danger text-success')
-      .addClass(tipo === 'error' ? 'text-danger' : tipo === 'ok' ? 'text-success' : '')
+      .removeClass('is-error is-ok')
+      .addClass(tipo === 'error' ? 'is-error' : tipo === 'ok' ? 'is-ok' : '')
       .text(texto);
   }
 
@@ -189,6 +196,7 @@
   function setEnviando(activo) {
     enviando = activo;
     $submit.prop('disabled', activo);
+    $submitSpinner.toggleClass('d-none', !activo);
   }
 
   function enviar() {
@@ -202,6 +210,7 @@
           mostrarError(campo, '');
         });
         setFormStatus(MSG_GUARDADO, 'ok');
+        marcarNuevo = true;
         window.ContactList.load(1);
       })
       .fail(function (xhr) {
@@ -221,6 +230,7 @@
   function initFormulario() {
     $form = $('#contact-form');
     $submit = $('#contact-submit');
+    $submitSpinner = $('#contact-submit-spinner');
     $formStatus = $('#contact-form-status');
 
     // Valida al salir de cada campo; mientras tiene error, también al corregirlo.
