@@ -31,8 +31,16 @@ declare(strict_types=1);
             <div class="col-12 col-lg-7">
                 <div class="app-card" id="contact-list-section">
                     <h2 class="h5 mb-3">Listado de datos</h2>
-                    <!-- El listado se implementa como feature (ver task.md §4). Sin <table>. -->
-                    <div id="contact-list" class="contact-list" aria-live="polite"></div>
+                    <div id="contact-list-status" class="contact-list-status" role="status" aria-live="polite"></div>
+                    <div id="contact-list" class="contact-list"></div>
+                    <div class="contact-pagination d-none" id="contact-pagination"
+                         role="navigation" aria-label="Paginado del listado">
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                id="contact-prev">Anterior</button>
+                        <span class="text-body-secondary small" id="contact-page-info"></span>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                id="contact-next">Siguiente</button>
+                    </div>
                 </div>
             </div>
         </div>

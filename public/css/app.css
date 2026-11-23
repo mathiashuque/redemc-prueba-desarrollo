@@ -4,6 +4,8 @@
   --app-text: #1f2937;
   --app-accent: #0d6efd;
   --app-radius: 0.75rem;
+  --app-border: #e5e7eb;
+  --app-muted: #6b7280;
 }
 
 body {
@@ -19,6 +21,38 @@ body {
 }
 
 .contact-list {
-  max-height: 32rem;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.contact-list-status {
+  color: var(--app-muted);
+  min-height: 1.5rem;
+}
+
+.contact-list-status:empty {
+  min-height: 0;
+}
+
+.contact-item {
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  padding: 0.75rem 1rem;
+  overflow-wrap: anywhere;
+}
+
+.contact-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+@media (width >= 576px) {
+  .contact-item {
+    padding: 0.875rem 1.25rem;
+  }
 }
