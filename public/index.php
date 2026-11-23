@@ -157,7 +157,10 @@ declare(strict_types=1);
             </div>
         </div>
 
-        <div class="app-footer">Hecho con PHP, MySQL, jQuery y Bootstrap.</div>
+        <div class="app-footer">
+            Hecho con PHP, MySQL, jQuery y Bootstrap por
+            <a href="https://mathiashuque.dev/" target="_blank" rel="noopener noreferrer">mathiashuque.dev</a>
+        </div>
     </div>
 
     <!-- SRI: si el CDN sirve un archivo distinto, el navegador no lo ejecuta. -->

@@ -122,6 +122,23 @@ body {
   text-align: center;
 }
 
+.app-footer a {
+  font-weight: 600;
+  color: var(--app-accent);
+  text-decoration: none;
+  border-radius: 0.25rem;
+}
+
+.app-footer a:hover {
+  color: var(--app-accent-strong);
+  text-decoration: underline;
+}
+
+.app-footer a:focus-visible {
+  outline: 3px solid var(--app-accent-ring);
+  outline-offset: 2px;
+}
+
 /* Tarjetas */
 
 .app-card {
