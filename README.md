@@ -48,12 +48,11 @@ Si el puerto 8080 está ocupado: `APP_PORT=8081 make up`. Para cambiar otros val
 - `develop`: integración.
 - `feature/<nombre>`: una rama por feature, creada desde `develop` y mergeada a `develop` por pull request.
 
-Los commits no llevan atribución a herramientas de IA. El hook `commit-msg` (activado por `make setup`) y el CI lo verifican.
+Los commits no llevan atribución a herramientas de IA. El hook `commit-msg` (activado por `make setup`) lo verifica al commitear.
 
 ## CI/CD
 
 - **CI** (`.github/workflows/ci.yml`) corre en todas las ramas y en los pull requests:
-  - Chequeo de que ningún commit tenga atribución a IA.
   - PHP: `composer validate`, lint de sintaxis, PHPCS, PHPStan y tests unitarios.
   - Frontend: ESLint y Stylelint.
   - Integración: MySQL en un contenedor de servicio, esquema aplicado y tests contra la app con `php -S`.

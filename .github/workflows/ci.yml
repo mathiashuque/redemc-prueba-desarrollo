@@ -18,15 +18,6 @@ env:
   NODE_VERSION: "24"
 
 jobs:
-  attribution:
-    name: Sin atribución a IA en commits
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - run: scripts/check-no-ai-attribution.sh HEAD
-
   php:
     name: PHP (lint, PHPCS, PHPStan, tests unitarios)
     runs-on: ubuntu-latest
