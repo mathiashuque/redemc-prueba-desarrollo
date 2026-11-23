@@ -101,6 +101,16 @@ En GitHub, en *Settings → Secrets and variables → Actions*, se cargaron:
 
 **Comprobación**: `https://app-production-51090269.up.railway.app/api/health.php` responde `{"status":"ok","db":true}`.
 
+## Seguridad
+
+[`docs/SEGURIDAD.md`](docs/SEGURIDAD.md) tiene el análisis completo: inyección SQL, XSS, CSRF, cabeceras, dependencias y escaneo de la imagen con Trivy. Resume qué se corrigió y qué riesgos se aceptan. Puntos principales:
+
+- Consultas preparadas reales con PDO, y datos pintados con `.text()`.
+- CSP y SRI en los recursos de CDN.
+- Protección CSRF por origen en el alta.
+- Contenedor sin root, con imágenes de versión fija.
+- El job `security` del CI corre `composer audit`, `npm audit` y Trivy, y Dependabot propone las actualizaciones.
+
 ## Desarrollo con IA
 
 El repositorio incluye un harness para trabajar con agentes de IA:
