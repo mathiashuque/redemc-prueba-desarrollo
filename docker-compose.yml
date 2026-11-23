@@ -1,0 +1,42 @@
+# Entorno de desarrollo local. Valores por defecto en .env.example (no son secretos).
+# Los puertos se publican solo en 127.0.0.1: las contraseñas de desarrollo no quedan expuestas en la red.
+services:
+  app:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "127.0.0.1:${APP_PORT:-8080}:8080"
+    environment:
+      PORT: 8080
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-redemc}
+      DB_USER: ${DB_USER:-redemc}
+      DB_PASSWORD: ${DB_PASSWORD:-redemc}
+    volumes:
+      - .:/var/www/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.4.13
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-redemc}
+      MYSQL_USER: ${DB_USER:-redemc}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-redemc}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+    ports:
+      - "127.0.0.1:${DB_PORT_HOST:-3307}:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  db-data:
