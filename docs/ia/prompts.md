@@ -67,3 +67,23 @@ Vas a coordinar el trabajo como developer senior. Los developers junior van a se
 ```
 
 > Resultado: #4 y #5 se hicieron en paralelo, y después #6, #7 y #8 en secuencia. De ahí salieron los PR #9, #10, #11 y #12, que el usuario revisó y mergeó.
+
+### 2026-11-23 · Claude Code (análisis de seguridad) ⭐
+
+```text
+Quiero un análisis de seguridad que cubra inyección SQL, vulnerabilidades en las imágenes y en las dependencias, entre otros aspectos.
+
+A partir de ese análisis, implementá las mejoras y los cambios que correspondan.
+```
+
+> Resultado: no se encontró inyección SQL ni XSS, y `composer audit` y `npm audit` salieron limpios.
+>
+> Se corrigió:
+> - SRI en los recursos de CDN.
+> - CSP y cabeceras de seguridad.
+> - Protección CSRF por origen en el alta.
+> - Imagen de producción sin root y con parches de Debian (Trivy pasó de 75 vulnerabilidades HIGH con parche a 0).
+> - Versiones fijas en las imágenes y las actions.
+> - Un job `security` en el CI y Dependabot.
+>
+> El informe está en `docs/SEGURIDAD.md` y el cambio entró con el PR #15. El primer hash SRI de jQuery estaba mal calculado; se detectó al revisar en el navegador.
