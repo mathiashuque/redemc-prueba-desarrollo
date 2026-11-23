@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Integration;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+
 /**
  * Prueba el endpoint de alta contra la aplicación levantada y su base real.
  * Los datos son únicos por corrida, así que los tests se pueden repetir.
@@ -108,6 +110,36 @@ final class CrearContactoTest extends ApiTestCase
 
         self::assertSame(415, $status);
         self::assertArrayHasKey('error', json_decode($body, true));
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function cabecerasDeOtroSitio(): iterable
+    {
+        yield 'Sec-Fetch-Site cross-site' => ['Sec-Fetch-Site: cross-site'];
+        yield 'Origin de otro host' => ['Origin: https://evil.example'];
+    }
+
+    #[DataProvider('cabecerasDeOtroSitio')]
+    public function testAltaDesdeOtroSitioDevuelve403(string $cabecera): void
+    {
+        $email = $this->emailUnico();
+
+        [$status, $body] = $this->request('POST', '/api/crear.php', [
+            'nombre' => 'Ana',
+            'email' => $email,
+        ], headers: [$cabecera]);
+
+        self::assertSame(403, $status);
+        self::assertSame(['error' => 'Origen no permitido.'], json_decode($body, true));
+
+        // No se guardó: el mismo email se puede dar de alta desde el mismo origen.
+        [$status] = $this->request('POST', '/api/crear.php', [
+            'nombre' => 'Ana',
+            'email' => $email,
+        ], headers: ['Sec-Fetch-Site: same-origin']);
+        self::assertSame(201, $status);
     }
 
     private function emailUnico(): string

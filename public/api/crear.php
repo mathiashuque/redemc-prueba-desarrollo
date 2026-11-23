@@ -7,10 +7,12 @@ use App\Contacto\ContactoRepository;
 use App\Contacto\ContactoValidator;
 use App\Database;
 use App\Http\JsonResponse;
+use App\Http\MismoOrigen;
 
 require dirname(__DIR__, 2) . '/vendor/autoload.php';
 
 JsonResponse::allowMethods('POST');
+MismoOrigen::exigir();
 
 $contentType = strtolower($_SERVER['CONTENT_TYPE'] ?? '');
 if (!str_starts_with($contentType, 'application/x-www-form-urlencoded')) {
