@@ -4,7 +4,7 @@ Cómo usé IA en esta prueba. El detalle completo está en [`docs/ia/prompts.md`
 
 ## 1. Herramientas y para qué
 
-Usé **Claude Code** en todo el proyecto. Primero pasé la consigna a una especificación técnica (`task.md`) y armé un harness para trabajar con agentes: `AGENTS.md`, skills para planificar, implementar con gitflow y verificar, más un agente revisor. También armé la estructura base con Docker y el pipeline de CI/CD hacia Railway.
+Usé **Claude Code** a lo largo del proyecto. Primero pasé la consigna a una especificación técnica (`task.md`) y armé un harness para trabajar con agentes: `AGENTS.md`, skills para planificar, implementar con gitflow y verificar, más un agente revisor. También armé la estructura base con Docker y el pipeline de CI/CD hacia Railway.
 
 Para las features, Claude Code (Opus) coordinó y revisó, y la implementación quedó a cargo de agentes **Claude Haiku**. Cada agente trabajó en su propio git worktree y abrió un PR a `develop`. Yo revisé cada PR y la app levantada en local antes de mergear, y decidí qué sugerencias se aceptaban.
 
