@@ -1,0 +1,118 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PHP_VERSION: "8.4"
+  NODE_VERSION: "24"
+
+jobs:
+  php:
+    name: PHP (lint, PHPCS, PHPStan, tests unitarios)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: pdo_mysql
+          coverage: none
+          tools: composer:v2
+      - run: composer validate --strict
+      - uses: ramsey/composer-install@v3
+      - run: composer lint
+      - run: composer cs
+      - run: composer stan
+      - run: composer test
+
+  frontend:
+    name: Frontend (ESLint, Stylelint)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+
+  integration:
+    name: Integración con MySQL
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: redemc
+          MYSQL_USER: redemc
+          MYSQL_PASSWORD: redemc
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot --silent"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: "3306"
+      DB_NAME: redemc
+      DB_USER: redemc
+      DB_PASSWORD: redemc
+      APP_URL: http://127.0.0.1:8000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: pdo_mysql
+          coverage: none
+          tools: composer:v2
+      - uses: ramsey/composer-install@v3
+      - name: Aplicar esquema
+        run: php bin/migrate.php
+      - name: Levantar la app
+        run: |
+          php -S 127.0.0.1:8000 -t public > /tmp/php-server.log 2>&1 &
+          for _ in $(seq 1 20); do
+            curl -s -o /dev/null "$APP_URL/" && exit 0
+            sleep 1
+          done
+          echo "::error::La app no levantó"
+          exit 1
+      - run: composer test:integration
+      - name: Log del servidor
+        if: failure()
+        run: cat /tmp/php-server.log
+
+  docker:
+    name: Imagen Docker de producción
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Construir imagen
+        run: docker build -t redemc:ci .
+      - name: Probar que respeta $PORT
+        run: |
+          docker run -d --name app -p 9000:9000 -e PORT=9000 -e RUN_MIGRATIONS=0 redemc:ci
+          for _ in $(seq 1 20); do
+            if [ "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:9000/)" = "200" ]; then
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs app
+          exit 1

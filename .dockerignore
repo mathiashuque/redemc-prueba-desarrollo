@@ -1,0 +1,11 @@
+.git
+.github
+.claude
+.agents
+.githooks
+node_modules
+vendor
+docs
+tests
+.env
+.phpunit.cache
