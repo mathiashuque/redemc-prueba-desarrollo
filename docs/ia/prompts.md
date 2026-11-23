@@ -1,65 +1,69 @@
 # Bitácora de prompts
 
-Registro de los prompts enviados a herramientas de IA durante la prueba. En Claude Code se completa solo con el hook `scripts/log-prompt.sh`; los prompts de otras herramientas se agregan a mano (skill `registrar-prompts`). Los prompts clave se marcan con ⭐.
+Registro de los prompts enviados a herramientas de IA durante la prueba. Están reescritos con una redacción más formal que la original, sin cambiar lo que se pidió. En Claude Code se completa solo con el hook `scripts/log-prompt.sh`. Los prompts de otras herramientas se agregan a mano con la skill `registrar-prompts`. Los prompts clave están marcados con ⭐.
 
 ### 2026-11-23 · Claude Code (armado del harness) ⭐
 
 ```text
-planea e implementa un harnes (skills, agents.md etc) para desarrollar features con IA en este proyecto, tambien implementa la estructura basica sugerida del repositorio indicado en el task.md.
+Planificá e implementá un harness (skills, AGENTS.md, etc.) para desarrollar features con IA en este proyecto. Implementá también la estructura básica de repositorio sugerida en task.md.
 
-recuerda que la idea es que no hayan commits ni firmados ni coauthored by claude.
+Ningún commit debe estar firmado por Claude ni incluir "Co-Authored-By: Claude".
 
-Tambien me gustaria que haya un pipeline de github de CI/CD, CI para validar codigo, CD para luego subirlo a railway.
+Además, quiero un pipeline de CI/CD en GitHub: CI para validar el código y CD para desplegarlo en Railway.
 ```
 
-> Resultado: plan aprobado tras dos ajustes del usuario (abajo) y harness implementado en `feature/harness-setup`.
+> Resultado: el plan se aprobó tras los dos ajustes que siguen y el harness quedó implementado en `feature/harness-setup`.
 
 ### 2026-11-23 · Claude Code (ajuste del plan)
 
 ```text
-una de las skills que me gustaria tener es una de registrar prompts, que registre cada prompt que mando en un markdown o algo asi, como una bitacora.
+Quiero una skill para registrar los prompts: que cada prompt que envío quede anotado en un archivo Markdown, a modo de bitácora.
 
-despues skills basicas que tu encuentres util para este proyecto.
+Agregá además las skills básicas que consideres útiles para este proyecto.
 ```
 
 ### 2026-11-23 · Claude Code (ajuste del plan) ⭐
 
 ```text
-otra skill que seria implementar feature, la idea es que se implemente el feature realizando gitflow, es decir se crea una rama a partir de develop, en dicha rama se implementa el feature, y luego de finalizado se crea un pull request a develop y se levanta en docker para que yo revise lo realizado.
+Sumá una skill para implementar features con gitflow:
+1. Se crea una rama a partir de develop.
+2. En esa rama se implementa la feature.
+3. Al terminar, se abre un pull request a develop.
+4. Se levanta la aplicación en Docker para que yo revise el resultado.
 
-sobre el CI, este se ejecuta en todas las ramas y subramas, el cd solamente en main, pero debe poder ser ejecutable manualmente desde la rama develop.
+El CI debe ejecutarse en todas las ramas y subramas. El CD debe ejecutarse automáticamente solo en main, y también debe poder dispararse a mano desde develop.
 ```
 
-> Resultado: harness, skills y CI/CD acordados; el plan quedó aprobado tras estos ajustes. Las entradas siguientes se agregaron a mano: el hook automático no las registró.
+> Resultado: el harness, las skills y el CI/CD quedaron definidos y el plan se aprobó. Las entradas siguientes se agregaron a mano porque el hook automático no las registró.
 
 ### 2026-11-23 · Claude Code (quitar job del CI)
 
 ```text
-borra del CI " [Sin atribución a IA en commits](...) succeeded 1 minute ago in 5s " no deberia ser parte del CI, simplemente una regla general
+Eliminá del CI el job "Sin atribución a IA en commits". No tiene que ser parte del pipeline: es una regla general del proyecto.
 ```
 
-> Resultado: se quitó el job del CI. La regla queda en `AGENTS.md` y en el hook local `commit-msg`.
+> Resultado: el job salió del CI. La regla sigue en `AGENTS.md` y en el hook local `commit-msg`.
 
 ### 2026-11-23 · Claude Code (probar CD sin tocar main)
 
 ```text
-el pr ya esta mergeado a develop, la idea es no tocar main por ahora, quiero testear el cd sin pr a main todavia
+El PR ya está mergeado en develop. Quiero probar el CD sin abrir todavía un pull request a main.
 ```
 
-> Resultado: se disparó el CD a mano desde `develop`, cambiando temporalmente la rama por defecto. El deploy a Railway pasó el smoke test.
+> Resultado: el CD se disparó a mano desde `develop`, cambiando por un rato la rama por defecto. El deploy a Railway pasó el smoke test.
 
 ### 2026-11-23 · Claude Code (issues de features) ⭐
 
 ```text
-Bien, ahora desde task.md, quiero que hagas una lista features a realizar, la idea es cada uno de los features y su checklist de aceptacion sean redactados en un issue en github, con assignees a mi, labels Enhancement, Type Feature. la idea es que cada feature sea luego implementado utilizando la skill de implementar features. planea esto y luego ejecutalo (redacta los features).
+A partir de task.md, armá la lista de features a implementar. Cada feature, con su checklist de aceptación, tiene que quedar redactada en un issue de GitHub asignado a mí, con el label "enhancement" y el tipo "Feature". Después cada feature se implementará con la skill implementar-feature. Planificalo y luego ejecutalo.
 ```
 
-> Resultado: issues #4 a #8, uno por feature, con checklist de aceptación y asignados al usuario.
+> Resultado: issues #4 a #8, uno por feature, con su checklist de aceptación y asignados al usuario.
 
 ### 2026-11-23 · Claude Code (coordinación senior y juniors) ⭐
 
 ```text
-bien, tu coordinaras como un developer senior, tus developers junior seran agentes haikuu, haz que implementen los features (en lo posible en simultaneo). tu revisaras sus outputs, y luego lo revisare yo. planea como hacer esto
+Vas a coordinar el trabajo como developer senior. Los developers junior van a ser agentes Haiku, que implementarán las features, en paralelo cuando se pueda. Vos revisás lo que entregan y después lo reviso yo. Planificá cómo organizarlo.
 ```
 
-> Resultado: #4 y #5 en paralelo, luego #6, #7 y #8 en secuencia. Generaron los PR #9, #10, #11 y #12, que el usuario revisó y mergeó.
+> Resultado: #4 y #5 se hicieron en paralelo, y después #6, #7 y #8 en secuencia. De ahí salieron los PR #9, #10, #11 y #12, que el usuario revisó y mergeó.
