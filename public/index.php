@@ -49,7 +49,7 @@ declare(strict_types=1);
                                 Teléfono <span class="text-body-secondary small">(opcional)</span>
                             </label>
                             <input type="tel" class="form-control" id="contact-telefono" name="telefono"
-                                   maxlength="9" inputmode="tel" autocomplete="tel"
+                                   inputmode="tel" autocomplete="tel"
                                    placeholder="097680102" aria-describedby="contact-telefono-error">
                             <div class="invalid-feedback" id="contact-telefono-error"></div>
                         </div>
