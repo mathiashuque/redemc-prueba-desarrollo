@@ -6,6 +6,8 @@ Prueba técnica para el puesto de desarrollador web en RedEMC: formulario de alt
 
 **Stack**: HTML5, CSS3, Bootstrap 5, JavaScript con jQuery, PHP 8.4 (sin framework) y MySQL 8.4. Desplegado en Railway.
 
+![Pantalla de la aplicación: formulario de alta a la izquierda y listado paginado de contactos a la derecha](docs/img/frontend.png)
+
 ## Funcionalidad
 
 - **Formulario de alta**: nombre (obligatorio, solo letras y espacios, con tildes y `ñ`), email (obligatorio, único sin distinguir mayúsculas) y teléfono (opcional, 9 dígitos que empiezan con `09`, único). La validación corre en el navegador y se repite en el servidor, que es la autoridad. Los errores se muestran por campo sin borrar los demás datos.
