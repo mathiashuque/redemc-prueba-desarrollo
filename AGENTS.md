@@ -58,7 +58,7 @@ make down
 ## Git (gitflow)
 
 - `main` = producción (cada push despliega a Railway). `develop` = integración.
-- Cada feature va en `feature/<slug>` creada desde `origin/develop`, y vuelve a `develop` por pull request. No hacer push directo a `develop` ni a `main`.
+- Cada feature va en `feature/<slug>` creada desde `origin/develop`, y vuelve a `develop` por pull request, asignado al usuario (`gh pr create --assignee @me`). No hacer push directo a `develop` ni a `main`.
 - Commits con prefijo convencional (`feat:`, `fix:`, `chore:`, `docs:`, `test:`, `ci:`), en español.
 - **Ningún commit ni PR lleva atribución a IA**: nada de `Co-Authored-By: Claude …`, "Generated with Claude Code" ni similares. Es una regla general del proyecto; el hook local `commit-msg` ayuda a no olvidarla.
 - CI corre en todas las ramas; CD corre solo en `main` y se puede disparar a mano desde `develop`.

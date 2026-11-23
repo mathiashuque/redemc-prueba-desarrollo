@@ -39,8 +39,10 @@ Seguí `verificar-cambio`. No avances con checks en rojo. Si cambia la UI, pedí
 
 ```bash
 git push -u origin feature/<slug>
-gh pr create --base develop --title "feat: <resumen>" --body-file <archivo>
+gh pr create --base develop --assignee @me --title "feat: <resumen>" --body-file <archivo>
 ```
+
+Todo PR se asigna al usuario (`--assignee @me`; si ya existe, `gh pr edit <n> --add-assignee @me`).
 
 El cuerpo del PR, en español y **sin atribución a IA**, incluye:
 

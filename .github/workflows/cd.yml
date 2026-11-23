@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: ${{ vars.APP_URL }}
+      url: ${{ steps.config.outputs.app_url }}
     concurrency:
       group: deploy-production
       cancel-in-progress: false
@@ -46,6 +46,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Verificar configuración
+        id: config
         run: |
           missing=""
           [ -n "$RAILWAY_TOKEN" ] || missing="$missing RAILWAY_TOKEN(secret)"
@@ -55,6 +56,13 @@ jobs:
             echo "::error::Falta configurar en GitHub:$missing. Ver README, sección Railway."
             exit 1
           fi
+          # Acepta APP_URL con o sin esquema y con o sin barra final.
+          url="${APP_URL%/}"
+          case "$url" in
+            http://*|https://*) ;;
+            *) url="https://$url" ;;
+          esac
+          echo "app_url=$url" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
@@ -63,6 +71,8 @@ jobs:
       - name: Desplegar
         run: railway up --ci --service "$RAILWAY_SERVICE"
       - name: Smoke test
+        env:
+          APP_URL: ${{ steps.config.outputs.app_url }}
         run: |
           for _ in $(seq 1 30); do
             if curl -fsS "$APP_URL/api/health.php"; then
