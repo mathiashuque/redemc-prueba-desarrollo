@@ -1,25 +1,23 @@
 # Proceso con IA
 
-Este archivo resume cómo usé herramientas de IA en la prueba. El detalle completo está en `docs/ia/prompts.md` (todos los prompts) y `docs/ia/bitacora.md` (decisiones).
+Cómo usé IA en esta prueba. El detalle completo está en [`docs/ia/prompts.md`](docs/ia/prompts.md) (prompts) y [`docs/ia/bitacora.md`](docs/ia/bitacora.md) (decisiones).
 
 ## 1. Herramientas y para qué
 
-- **Claude Code (Opus)**: coordinador y revisor. Planificó el harness (AGENTS.md, skills, agente `revisor`), la estructura base con Docker, el CI/CD y el reparto de features. Revisó el trabajo de los agentes antes de que yo lo viera.
-- **Agentes Claude Haiku**: implementadores de las features #4 a #8. Cada uno trabajó en su propio git worktree y rama `feature/*`, con un PR a `develop`.
-- **Yo (desarrollador)**: pasé la consigna de RedEMC a una especificación técnica (`task.md`, redactada con ayuda de Claude), revisé cada PR y la app levantada en local, mergeé a `develop` y decidí qué sugerencias se aceptaban.
+Usé **Claude Code** en todo el proyecto. Primero pasé la consigna a una especificación técnica (`task.md`) y armé un harness para trabajar con agentes: `AGENTS.md`, skills para planificar, implementar con gitflow y verificar, más un agente revisor. También armé la estructura base con Docker y el pipeline de CI/CD hacia Railway.
+
+Para las features, Claude Code (Opus) coordinó y revisó, y la implementación quedó a cargo de agentes **Claude Haiku**. Cada agente trabajó en su propio git worktree y abrió un PR a `develop`. Yo revisé cada PR y la app levantada en local antes de mergear, y decidí qué sugerencias se aceptaban.
 
 ## 2. Prompts clave
 
-- **Harness y estructura base**: pedí "planea e implementa un harness (skills, agents.md etc) para desarrollar features con IA", con la regla de que ningún commit lleve atribución a IA. El plan se ajustó dos veces: agregué la skill de registro de prompts y el flujo gitflow para las features.
-- **Issues de features**: pedí redactar cada feature de `task.md` como issue de GitHub con su checklist de aceptación, asignado a mí, para luego implementarlo con la skill de features.
-- **Coordinación senior y juniors**: pedí que el coordinador trabajara "como un developer senior", con agentes junior en paralelo cuando fuera posible, y que yo revisara sus salidas al final. Así salieron #4 y #5 en paralelo, y después #6, #7 y #8 en secuencia.
+- **Harness**: le pedí planificar e implementar un harness (skills, `AGENTS.md`) para desarrollar features con IA y un pipeline de CI/CD a Railway, con la condición de que ningún commit llevara atribución a IA. Ajusté el plan dos veces: sumé una skill para registrar los prompts y un flujo gitflow para las features.
+- **Features como issues**: le pedí convertir cada feature de `task.md` en un issue de GitHub con su checklist de aceptación, para implementar cada uno con la skill de features.
+- **Coordinación**: le pedí que actuara como developer senior, que coordinara agentes junior trabajando en paralelo cuando se pudiera y que revisara lo que entregaban antes de que yo lo viera.
 
 ## 3. Sugerencia corregida: `maxlength` en el teléfono
 
-Un agente junior (feature del formulario) puso `maxlength="9"` en el campo teléfono. El navegador truncaba un número de 10 dígitos a 9 y lo aceptaba como válido en silencio, así que el error de longitud nunca llegaba al usuario. Se encontró en la revisión en navegador, no en los tests automáticos. Se quitó el atributo, y el teléfono ahora muestra el error específico que pide la spec.
+Un agente le puso `maxlength="9"` al campo teléfono. El navegador recortaba un número de 10 dígitos a 9 y lo aceptaba como válido sin avisar, así que el error de longitud que pide la consigna nunca aparecía. Los tests automáticos no lo detectaron. Salió en la revisión en el navegador y se quitó el atributo.
 
 ## 4. Lo que aprendí
 
-- Con agentes en paralelo, el trabajo del coordinador empieza antes de programar: hay que definir contratos y límites de archivos. Por ejemplo, separar el endpoint único en `crear.php` y `listar.php` evitó conflictos entre dos juniors.
-- Los tests automáticos no alcanzan. Un problema de UI como el `maxlength` solo apareció al probar en el navegador.
-- Un agente puede agregar reglas que la spec no pide (por ejemplo, topes de caracteres). Hay que revisarlas, porque a veces tienen buen motivo, como evitar un error 500 de la base.
+No fue algo demasiado nuevo para mí, pero me sirvió para repasar PHP: hacía tiempo que no lo usaba y volví a sus versiones modernas, con tipos estrictos, clases `readonly` y PDO con consultas preparadas. También tuve que recordar Bootstrap. Hoy trabajo más con Tailwind, y volver a pensar con componentes y la grilla de Bootstrap en lugar de utilidades me costó un poco al principio.
