@@ -88,7 +88,7 @@
     return m ? m[3] + '/' + m[2] + '/' + m[1] + ' ' + m[4] + ':' + m[5] : sqlDate;
   }
 
-  const COLORES_AVATAR = 6;
+  const COLORES_AVATAR = 5;
   const SKELETONS = 3;
 
   // "ana maría pérez" -> "AM". Se pinta con .text().

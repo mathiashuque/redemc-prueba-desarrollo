@@ -4,20 +4,28 @@
  */
 :root {
   --app-font: "Inter", system-ui, -apple-system, "Segoe UI", roboto, sans-serif;
-  --app-bg: #f5f6fb;
+  /* Paleta de la marca redEMC (logo). Los tonos base son decorativos; texto y botones usan las variantes oscuras. */
+  --brand-pink: #e8488a;
+  --brand-yellow: #f7b52c;
+  --brand-blue: #2aa8df;
+  --brand-red: #e8452c;
+  --brand-teal: #3cbfad;
+  --brand-gray: #4d4f53;
+  --app-bg: #f5f7fa;
   --app-surface: #fff;
-  --app-surface-muted: #f8f9fc;
-  --app-text: #0f172a;
-  --app-muted: #475569;
-  --app-subtle: #64748b;
-  --app-accent: #4f46e5;
-  --app-accent-strong: #4338ca;
-  --app-accent-2: #7c3aed;
-  --app-accent-soft: #eef2ff;
-  --app-accent-ring: rgb(79 70 229 / 22%);
+  --app-surface-muted: #f8fafb;
+  --app-text: #2f3237;
+  --app-muted: #5a5f68;
+  --app-subtle: #6b7079;
+  --app-accent: #0b74ab;
+  --app-accent-strong: #095f8c;
+  --app-accent-2: #0d7a6e;
+  --app-accent-soft: #e3f2fa;
+  --app-accent-ring: rgb(42 168 223 / 30%);
   --app-gradient: linear-gradient(135deg, var(--app-accent) 0%, var(--app-accent-2) 100%);
-  --app-border: #e2e8f0;
-  --app-border-hover: #c7d2fe;
+  --app-eyebrow: #b81f63;
+  --app-border: #e3e7ec;
+  --app-border-hover: #a9d8ef;
   --app-input-border: #8b95a7;
   --app-input-border-hover: #5f6b7f;
   --app-placeholder: #6b7280;
@@ -31,7 +39,7 @@
   --app-radius: 0.875rem;
   --app-radius-sm: 0.625rem;
   --app-shadow: 0 1px 2px rgb(15 23 42 / 4%), 0 8px 24px -6px rgb(15 23 42 / 10%);
-  --app-shadow-hover: 0 2px 4px rgb(15 23 42 / 5%), 0 12px 28px -8px rgb(79 70 229 / 25%);
+  --app-shadow-hover: 0 2px 4px rgb(15 23 42 / 5%), 0 12px 28px -8px rgb(11 116 171 / 25%);
   --app-gap: 0.75rem;
   --app-field-height: 3rem;
   --app-touch-target: 2.75rem;
@@ -55,9 +63,10 @@ body {
   height: 26rem;
   pointer-events: none;
   background:
-    radial-gradient(40rem 20rem at 10% -10%, rgb(124 58 237 / 18%), transparent 70%),
-    radial-gradient(36rem 18rem at 90% 0%, rgb(79 70 229 / 18%), transparent 70%),
-    radial-gradient(30rem 16rem at 50% 10%, rgb(20 184 166 / 10%), transparent 70%);
+    radial-gradient(32rem 18rem at 5% -10%, rgb(232 72 138 / 16%), transparent 70%),
+    radial-gradient(30rem 16rem at 35% 0%, rgb(247 181 44 / 14%), transparent 70%),
+    radial-gradient(32rem 18rem at 70% -5%, rgb(42 168 223 / 18%), transparent 70%),
+    radial-gradient(28rem 16rem at 100% 10%, rgb(60 191 173 / 16%), transparent 70%);
 }
 
 .app-container {
@@ -78,18 +87,18 @@ body {
   display: grid;
   flex-shrink: 0;
   place-items: center;
-  width: 3.25rem;
-  height: 3.25rem;
-  color: #fff;
-  background: var(--app-gradient);
+  width: 3.5rem;
+  height: 3.5rem;
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border);
   border-radius: 1rem;
-  box-shadow: 0 10px 24px -8px rgb(79 70 229 / 60%);
+  box-shadow: var(--app-shadow);
 }
 
 .app-eyebrow {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--app-accent);
+  color: var(--app-eyebrow);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -312,7 +321,7 @@ body {
   width: 100%;
   min-height: var(--app-field-height);
   background: var(--app-gradient);
-  box-shadow: 0 8px 20px -8px rgb(79 70 229 / 70%);
+  box-shadow: 0 8px 20px -8px rgb(11 116 171 / 65%);
   transition:
     box-shadow var(--app-transition),
     transform var(--app-transition),
@@ -326,7 +335,7 @@ body {
 
 #contact-submit:hover:not(:disabled) {
   filter: brightness(1.06);
-  box-shadow: 0 12px 24px -8px rgb(79 70 229 / 75%);
+  box-shadow: 0 12px 24px -8px rgb(11 116 171 / 70%);
   transform: translateY(-1px);
 }
 
@@ -514,12 +523,12 @@ body {
   border-radius: 50%;
 }
 
-.contact-avatar-c0 { color: #3730a3; background-color: #e0e7ff; }
-.contact-avatar-c1 { color: #115e59; background-color: #ccfbf1; }
-.contact-avatar-c2 { color: #92400e; background-color: #fef3c7; }
-.contact-avatar-c3 { color: #9f1239; background-color: #ffe4e6; }
-.contact-avatar-c4 { color: #075985; background-color: #e0f2fe; }
-.contact-avatar-c5 { color: #5b21b6; background-color: #ede9fe; }
+/* Un color por cada punto del logo, en versión suave con texto oscuro (contraste AA). */
+.contact-avatar-c0 { color: #a3195b; background-color: #fde7f0; }
+.contact-avatar-c1 { color: #7f5300; background-color: #fef3d6; }
+.contact-avatar-c2 { color: #0b6a99; background-color: #e1f3fb; }
+.contact-avatar-c3 { color: #b3261e; background-color: #fde6e2; }
+.contact-avatar-c4 { color: #0e6f64; background-color: #dff5f1; }
 
 .contact-item-nombre {
   grid-area: nombre;

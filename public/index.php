@@ -8,7 +8,7 @@ declare(strict_types=1);
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#4f46e5">
+    <meta name="theme-color" content="#0b74ab">
     <title>RedEMC · Registro de contactos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,11 +25,13 @@ declare(strict_types=1);
     <div class="container app-container py-4 py-lg-5">
         <div class="app-header mb-4 mb-lg-5">
             <div class="app-brand" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
-                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                    <circle cx="9" cy="7" r="4"/>
-                    <path d="M19 8v6M22 11h-6"/>
+                <svg viewBox="0 0 40 40" width="34" height="34">
+                    <circle cx="20" cy="21" r="8.5" fill="none" stroke="#4d4f53" stroke-width="4"/>
+                    <circle cx="20" cy="6.5" r="5" fill="#e8488a"/>
+                    <circle cx="33.5" cy="15.5" r="5" fill="#2aa8df"/>
+                    <circle cx="28.5" cy="32" r="5" fill="#e8452c"/>
+                    <circle cx="11.5" cy="32" r="5" fill="#3cbfad"/>
+                    <circle cx="6.5" cy="15.5" r="5" fill="#f7b52c"/>
                 </svg>
             </div>
             <div>
