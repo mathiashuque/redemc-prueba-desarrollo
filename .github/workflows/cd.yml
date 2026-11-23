@@ -44,7 +44,7 @@ jobs:
       RAILWAY_SERVICE: ${{ vars.RAILWAY_SERVICE }}
       APP_URL: ${{ vars.APP_URL }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Verificar configuración
         id: config
         run: |
@@ -63,7 +63,7 @@ jobs:
             *) url="https://$url" ;;
           esac
           echo "app_url=$url" >> "$GITHUB_OUTPUT"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24"
       - name: Instalar Railway CLI
