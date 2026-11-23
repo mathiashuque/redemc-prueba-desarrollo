@@ -1,0 +1,3 @@
+#!/bin/sh
+# Bloquea commits con atribución a herramientas de IA. Se activa con `make setup`.
+exec "$(git rev-parse --show-toplevel)/scripts/check-no-ai-attribution.sh" --file "$1"
