@@ -1,0 +1,24 @@
+:root {
+  --app-bg: #f5f7fb;
+  --app-surface: #fff;
+  --app-text: #1f2937;
+  --app-accent: #0d6efd;
+  --app-radius: 0.75rem;
+}
+
+body {
+  background-color: var(--app-bg);
+  color: var(--app-text);
+}
+
+.app-card {
+  background-color: var(--app-surface);
+  border-radius: var(--app-radius);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 8%);
+  padding: 1.5rem;
+}
+
+.contact-list {
+  max-height: 32rem;
+  overflow-y: auto;
+}

@@ -1,0 +1,20 @@
+# Dependencias
+/vendor/
+/node_modules/
+
+# Entorno y secretos
+.env
+
+# Caches de herramientas
+.phpunit.cache/
+.phpcs-cache
+.eslintcache
+
+# Claude Code: archivos locales (settings.json y skills sí se versionan)
+.claude/settings.local.json
+.claude/worktrees/
+
+# Sistema / editor
+.DS_Store
+.idea/
+.vscode/
