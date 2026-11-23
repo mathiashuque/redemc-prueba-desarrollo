@@ -16,11 +16,19 @@ updates:
     target-branch: develop
     schedule:
       interval: weekly
+    # El proyecto fija PHP 8.4: solo parches de esa línea (evita RC y versiones nuevas).
+    ignore:
+      - dependency-name: php
+        versions: [">= 8.5"]
   - package-ecosystem: docker-compose
     directory: /
     target-branch: develop
     schedule:
       interval: weekly
+    # MySQL 8.4 es la línea LTS y la que usa Railway: solo parches de esa línea.
+    ignore:
+      - dependency-name: mysql
+        versions: [">= 8.5"]
   - package-ecosystem: github-actions
     directory: /
     target-branch: develop
