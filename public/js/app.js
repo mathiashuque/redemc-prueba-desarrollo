@@ -82,10 +82,28 @@
   let $next;
   let $count;
 
-  // "2026-11-23 14:05:00" -> "23/11/2026 14:05". El valor llega del servidor y se pinta con .text().
+  // La base guarda created_at en UTC; se muestra en hora de Uruguay (UTC-3, sin horario de verano).
+  const FORMATO_FECHA = new Intl.DateTimeFormat('es-UY', {
+    timeZone: 'America/Montevideo',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  });
+
+  // "2026-11-23 19:40:50" (UTC) -> "23/11/2026 16:40". El valor llega del servidor y se pinta con .text().
   function formatFecha(sqlDate) {
-    const m = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/.exec(sqlDate);
-    return m ? m[3] + '/' + m[2] + '/' + m[1] + ' ' + m[4] + ':' + m[5] : sqlDate;
+    const fecha = new Date(sqlDate.replace(' ', 'T') + 'Z');
+    if (Number.isNaN(fecha.getTime())) {
+      return sqlDate;
+    }
+    const p = {};
+    FORMATO_FECHA.formatToParts(fecha).forEach(function (parte) {
+      p[parte.type] = parte.value;
+    });
+    return p.day + '/' + p.month + '/' + p.year + ' ' + p.hour + ':' + p.minute;
   }
 
   const COLORES_AVATAR = 5;
